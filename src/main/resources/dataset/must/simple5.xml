@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<travellingSalesmanProblemInstance>
+    <name>simple5</name>
+    <source>DOI: 10.4236/ajor.2018.83010</source>
+    <description>
+        Solving the Traveling Salesman Problem Using Hydrological Cycle Algorithm
+        Figure 1. TSP instance with five nodes.
+    </description>
+    <author>Ahmad Al Mughrabi</author>
+    <doublePrecision>15</doublePrecision>
+    <ignoredDigits>5</ignoredDigits>
+    <graph>
+        <vertex>
+            <edge cost="31.000000000000000e+00">1</edge>
+            <edge cost="33.000000000000000e+00">2</edge>
+            <edge cost="49.000000000000000e+00">3</edge>
+            <edge cost="29.000000000000000e+00">4</edge>
+        </vertex>
+        <vertex>
+            <edge cost="31.000000000000000e+00">0</edge>
+            <edge cost="40.000000000000000e+00">2</edge>
+            <edge cost="61.000000000000000e+00">3</edge>
+            <edge cost="46.000000000000000e+00">4</edge>
+        </vertex>
+        <vertex>
+            <edge cost="33.000000000000000e+00">0</edge>
+            <edge cost="40.000000000000000e+00">1</edge>
+            <edge cost="42.000000000000000e+00">3</edge>
+            <edge cost="49.000000000000000e+00">4</edge>
+        </vertex>
+        <vertex>
+            <edge cost="49.000000000000000e+00">0</edge>
+            <edge cost="61.000000000000000e+00">1</edge>
+            <edge cost="42.000000000000000e+00">2</edge>
+            <edge cost="48.000000000000000e+00">4</edge>
+        </vertex>
+        <vertex>
+            <edge cost="29.000000000000000e+00">0</edge>
+            <edge cost="33.000000000000000e+00">1</edge>
+            <edge cost="49.000000000000000e+00">2</edge>
+            <edge cost="48.000000000000000e+00">3</edge>
+        </vertex>
+    </graph>
+</travellingSalesmanProblemInstance>
