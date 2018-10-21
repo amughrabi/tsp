@@ -39,7 +39,7 @@ public class Transformer {
     // DON'T USE IT FOR BIG GRAPHS
     public static void print(@NotNull Graph graph) {
         List<Vertex> vertices;
-        for (int i = 0; i < graph.getSize(); i++) {
+        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
             vertices = graph.adjacentOf(i);
             System.out.print(i);
             for(Vertex v : vertices) {
