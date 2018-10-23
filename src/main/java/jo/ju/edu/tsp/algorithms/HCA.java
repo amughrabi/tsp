@@ -14,15 +14,15 @@ import java.util.Random;
 
 public class HCA extends TSP {
     private static int maxIterations;
-    private final double initSoil = 10000, maxTemperature = 100, epsilon = 0.01, alpha = 2, PN = 0.99, beta = 10; // 10k
-    private double temperature = 50;
+    private final double initSoil = 10000, epsilon = 0.01, alpha = 2, PN = 0.99, beta = 10; // 10k
+    private double temperature = 50, maxTemperature = 1000;
 
     public @NotNull Graph solve(@NotNull Graph graph) {
         // Maximum number of iterations is a triple the number of vertices
         maxIterations = 3 * graph.getNumberOfVertices();
 
         // A graph of water drops solutions, each index represent a water drop.
-        Graph solutions = new Graph(graph.getNumberOfVertices(), "Solutions");
+        Graph solutions;
         // Number of water drops equals to number of vertices
         List<WaterDrop> waterDrops;
         WaterDrop waterDrop;
@@ -30,10 +30,12 @@ public class HCA extends TSP {
         Vertex theChosenOne;
         HashMap<Integer, List<Vertex>> bestGlobalSolution = null;
         int cycle = 0;
+        maxTemperature = maxTemperature * graph.getNumberOfVertices();
         while (temperature < maxTemperature) {
             // distribute the initial amount of soil and depth on the vertices.
             initParams(graph, bestGlobalSolution);
             waterDrops = getWDs(graph);
+            solutions = new Graph(graph.getNumberOfVertices(), "Solutions");
             for(int iteration = 0; iteration < maxIterations; iteration++) {
                 for(int i = 0; i < waterDrops.size(); i++) {
                     waterDrop = waterDrops.get(i);
@@ -45,7 +47,7 @@ public class HCA extends TSP {
                             fSoil = fSoil(vertex);
                             sum = 0;
                             if(solutions.adjacentOf(i) == null || solutions.adjacentOf(i).isEmpty()) {
-                                sum = Math.pow(fSoil, 2) * gDepth;
+                                sum = 1;
                             } else {
                                 for(Vertex vc : solutions.adjacentOf(i)) {
                                     sum += (Math.pow(fSoil(vc), 2) * gDepth(vc));
@@ -59,18 +61,22 @@ public class HCA extends TSP {
                             }
                         }
                     }
+                    if(theChosenOne == null) break;
                     // Mark the current vertex as visited
                     waterDrop.markAsVisited(theChosenOne.getId());
+                    // update the pointer
+                    waterDrop.setCurrentVertexId(theChosenOne.getId());
                     // 3.3.1. Velocity Update
                     updateVelocity(waterDrop, theChosenOne);
                     // 3.3.2. Soil Update
                     updateSoil(waterDrop, theChosenOne, waterDrops);
                     //3.3.3. Soil Transportation Update
                     updateCarrySoil(waterDrop, theChosenOne);
-                    // 3.3.4. Temperature Update
-                    updateTemperature(waterDrops);
+
                     solutions.put(i, theChosenOne);
                 }
+                // 3.3.4. Temperature Update
+                updateTemperature(waterDrops);
                 // check if the evaporation
                 // When the temperature increases and reaches a specified value, the evaporation stage is invoked.
                 if(temperature > maxTemperature) break;
@@ -90,7 +96,7 @@ public class HCA extends TSP {
         if(bestGlobalSolution != null) {
             for(int i : bestGlobalSolution.keySet()) {
                 for(Vertex v : bestGlobalSolution.get(i)) {
-                    System.out.print("  ->  " + v.getId());
+                    System.out.print("  ->  " + (v.getId()+1));
                 }
             }
         }
@@ -175,11 +181,11 @@ public class HCA extends TSP {
         double max = 0, min = Integer.MAX_VALUE;
         for(WaterDrop wd : wds) {
             if(max < wd.getSolutionQuality()) {
-                max = wd.getCurrentVertexId();
+                max = wd.getSolutionQuality();
             }
 
             if(min > wd.getSolutionQuality()) {
-                max = wd.getSolutionQuality();
+                min = wd.getSolutionQuality();
             }
         }
 
@@ -243,7 +249,7 @@ public class HCA extends TSP {
         List<WaterDrop> waterDrops = new ArrayList<WaterDrop>(graph.getNumberOfVertices());
         for(int i = 0; i < graph.getNumberOfVertices(); i++) {
             // Starting point is the same water drop ID.
-            waterDrops.add(i, new WaterDrop(i, i, waterDrops.size()));
+            waterDrops.add(i, new WaterDrop(i, i, graph.getNumberOfVertices()));
         }
         return waterDrops;
     }
