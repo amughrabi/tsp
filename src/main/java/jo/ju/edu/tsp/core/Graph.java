@@ -36,6 +36,16 @@ public class Graph {
         return vertices;
     }
 
+    public Vertex getVertex(int from, int to) {
+        List<Vertex> vertices = graph.get(from);
+        if(vertices != null && !vertices.isEmpty()) {
+            for(Vertex v : vertices) {
+                if(v.getId() == to) return v;
+            }
+        }
+        return null;
+    }
+
     public int getNumberOfVertices() {
         return numberOfVertices;
     }

@@ -22,6 +22,7 @@ public class WaterDrop {
         this.solutionQuality = carriedSoil;
         this.currentVertexId = currentVertexId;
         visited = new boolean[numberOfVertices];
+        markAsVisited(currentVertexId);
     }
 
     public int getCurrentVertexId() {

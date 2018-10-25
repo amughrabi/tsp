@@ -13,7 +13,7 @@
         <vertex>
             <edge cost="31.000000000000000e+00">1</edge>
             <edge cost="33.000000000000000e+00">2</edge>
-            <edge cost="49.000000000000000e+00">3</edge>
+            <edge cost="37.000000000000000e+00">3</edge>
             <edge cost="29.000000000000000e+00">4</edge>
         </vertex>
         <vertex>
@@ -29,14 +29,14 @@
             <edge cost="49.000000000000000e+00">4</edge>
         </vertex>
         <vertex>
-            <edge cost="49.000000000000000e+00">0</edge>
+            <edge cost="37.000000000000000e+00">0</edge>
             <edge cost="61.000000000000000e+00">1</edge>
             <edge cost="42.000000000000000e+00">2</edge>
             <edge cost="48.000000000000000e+00">4</edge>
         </vertex>
         <vertex>
             <edge cost="29.000000000000000e+00">0</edge>
-            <edge cost="33.000000000000000e+00">1</edge>
+            <edge cost="46.000000000000000e+00">1</edge>
             <edge cost="49.000000000000000e+00">2</edge>
             <edge cost="48.000000000000000e+00">3</edge>
         </vertex>

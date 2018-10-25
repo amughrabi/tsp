@@ -2,6 +2,7 @@ package jo.ju.edu.tsp.algorithms;
 
 import jo.ju.edu.tsp.core.Graph;
 import jo.ju.edu.tsp.core.Vertex;
+import jo.ju.edu.tsp.core.xml.Transformer;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
@@ -18,6 +19,8 @@ public class HCA extends TSP {
     private double temperature = 50, maxTemperature = 1000;
 
     public @NotNull Graph solve(@NotNull Graph graph) {
+        // print the graph
+        Transformer.print(graph);
         // Maximum number of iterations is a triple the number of vertices
         maxIterations = 3 * graph.getNumberOfVertices();
 
@@ -41,19 +44,17 @@ public class HCA extends TSP {
                     waterDrop = waterDrops.get(i);
                     theChosenOne = null;
                     theChosenOneValue = 0;
+                    // summation for each water drop
+                    sum = 0;
+                    for(Vertex vc : graph.adjacentOf(waterDrop.getCurrentVertexId())) {
+                        if(!waterDrop.isVisited(vc.getId()))
+                            sum += (Math.pow(fSoil(vc), 2) * gDepth(vc));
+                    }
+
                     for(Vertex vertex : graph.adjacentOf(waterDrop.getCurrentVertexId())) {
                         if(!waterDrop.isVisited(vertex.getId())) {
                             gDepth = gDepth(vertex);
                             fSoil = fSoil(vertex);
-                            sum = 0;
-                            if(solutions.adjacentOf(i) == null || solutions.adjacentOf(i).isEmpty()) {
-                                sum = 1;
-                            } else {
-                                for(Vertex vc : solutions.adjacentOf(i)) {
-                                    sum += (Math.pow(fSoil(vc), 2) * gDepth(vc));
-                                }
-                            }
-
                             probability = (Math.pow(fSoil, 2) * gDepth) / sum;
                             if(theChosenOneValue < probability) {
                                 theChosenOneValue = probability;
@@ -61,18 +62,19 @@ public class HCA extends TSP {
                             }
                         }
                     }
+
                     if(theChosenOne == null) break;
                     // Mark the current vertex as visited
                     waterDrop.markAsVisited(theChosenOne.getId());
-                    // update the pointer
-                    waterDrop.setCurrentVertexId(theChosenOne.getId());
                     // 3.3.1. Velocity Update
                     updateVelocity(waterDrop, theChosenOne);
                     // 3.3.2. Soil Update
-                    updateSoil(waterDrop, theChosenOne, waterDrops);
+                    updateSoil(waterDrop, theChosenOne, waterDrops, graph);
                     //3.3.3. Soil Transportation Update
                     updateCarrySoil(waterDrop, theChosenOne);
-
+                    // update the pointer
+                    waterDrop.setCurrentVertexId(theChosenOne.getId());
+                    // save the solution
                     solutions.put(i, theChosenOne);
                 }
                 // 3.3.4. Temperature Update
@@ -93,13 +95,21 @@ public class HCA extends TSP {
 
             cycle ++;
         }
+        // Print the best global solution details
         if(bestGlobalSolution != null) {
+            double cost = 0;
             for(int i : bestGlobalSolution.keySet()) {
+                System.out.print("---\nHamiltonian path: ");
+                System.out.print( (i + 1) );
                 for(Vertex v : bestGlobalSolution.get(i)) {
+                    cost += v.getCost();
                     System.out.print("  ->  " + (v.getId()+1));
                 }
+                System.out.print("  ->  " +  (i + 1) );
             }
+            System.out.println("   | cost (" + cost + ")");
         }
+
         return new Graph(0, "");
     }
 
@@ -192,15 +202,13 @@ public class HCA extends TSP {
         return new Pair<Double, Double>(min, max);
     }
 
-
-
     private void updateCarrySoil(WaterDrop wd, Vertex v) {
         double timeWD = v.getCost() / wd.getVelocity();
         double dSoil = 1 / timeWD;
         wd.setCarriedSoil(wd.getCarriedSoil() + (dSoil / wd.getSolutionQuality()));
     }
 
-    private void updateSoil(WaterDrop wd, Vertex v, List<WaterDrop> wds) {
+    private void updateSoil(WaterDrop wd, Vertex v, List<WaterDrop> wds, Graph graph) {
         double timeWD = v.getCost() / wd.getVelocity();
         double dSoil = 1 / timeWD;
         double avgWDs = getAverageVelocityForAllWaterDrops(wds);
@@ -213,6 +221,9 @@ public class HCA extends TSP {
         }
 
         v.addCharacteristic("soil", soil);
+        // because it's symmetric
+        Vertex sv = graph.getVertex(v.getId(), wd.getCurrentVertexId());
+        sv.addCharacteristic("soil", soil);
     }
 
     private double getAverageVelocityForAllWaterDrops(List<WaterDrop> wds) {
@@ -238,7 +249,11 @@ public class HCA extends TSP {
     }
 
     private double gDepth(Vertex v) {
-        return 1 / depth(v);
+        return 1 / normalize(depth(v));
+    }
+
+    private double normalize(double value) {
+        return value * 10000;
     }
 
     private double depth(Vertex v){
@@ -288,7 +303,7 @@ public class HCA extends TSP {
     * */
     private List<WaterDrop> rouletteWheelSelection(List<WaterDrop> wds) {
         Random random = new Random();
-        int popSize = random.nextInt(wds.size());
+        int popSize = random.nextInt(wds.size()) + 1;
 
         List<WaterDrop> populationNew = new ArrayList<WaterDrop>(popSize);
         //sum the total fitness of the population
@@ -314,6 +329,7 @@ public class HCA extends TSP {
         }
         return populationNew;
     }
+
 
     private int similarity(List<Vertex> wd1, List<Vertex> wd2) {
         if(wd1.size() != wd1.size()) return -1;
