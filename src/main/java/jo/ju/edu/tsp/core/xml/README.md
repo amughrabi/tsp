@@ -134,7 +134,7 @@ Please cite this work to feel the value of it in your life.
 
 ## Licence
 
-When I write this API, Only me and go know what I'm doing, but now only God knows what is going inside the project. 
+When I write this API, Only God and me know what I'm doing, but now only God knows what is going inside the project. 
 Be clever and cite the work as well. :smiley:
 
 Thanks a billion,
