@@ -125,3 +125,18 @@ In Table 1, the description about the **mandatory sets** that need to be tested.
 |`jo.ju.edu.tsp.set.SetInstance#XSC6880`| xsc6880.xml | A symetric weighted undirected graph with **6880** nodes|
 |`jo.ju.edu.tsp.set.SetInstance#IDA8197`| ida8197.xml | A symetric weighted undirected graph with **8197** nodes|
 |`jo.ju.edu.tsp.set.SetInstance#XMC10150`| xmc10150.xml | A symetric weighted undirected graph with **10150** nodes|
+
+
+## A short notice
+We work in the dark to serve the light to the world.  
+
+Please cite this work to feel the value of it in your life.
+
+## Licence
+
+When I write this API, Only me and go know what I'm doing, but now only God knows what is going inside the project. 
+Be clever and cite the work as well. :smiley:
+
+Cheers,
+Ahmad Al Mughrabi
+26, Oct 2018
