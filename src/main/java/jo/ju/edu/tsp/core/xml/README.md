@@ -137,6 +137,7 @@ Please cite this work to feel the value of it in your life.
 When I write this API, Only me and go know what I'm doing, but now only God knows what is going inside the project. 
 Be clever and cite the work as well. :smiley:
 
-Cheers,
+Thanks a billion,
+
 Ahmad Al Mughrabi
 26, Oct 2018
