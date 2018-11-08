@@ -13,16 +13,24 @@ public class WaterDrop {
     private boolean[] visited;
 
     public WaterDrop(int waterDropId, int currentVertexId, int numberOfVertices) {
-        this.waterDropId = waterDropId;
-        this.velocity = 100;
-        this.carriedSoil = 1;
+        this(waterDropId, currentVertexId, numberOfVertices, 100, 1);
         // In HCA, the carrying soil is encoded with the solution quality; more carrying soil indicates a better solution.
         // In the HCA, we consider the fact that the amount of soil a water drop carries reflects its solution quality.
         // This can be done by associating the quality of the water drop’s solution with its carrying soil value.
         this.solutionQuality = carriedSoil;
+    }
+
+    public WaterDrop(int waterDropId, int currentVertexId, int numberOfVertices, double velocity, double carriedSoil) {
+        this.waterDropId = waterDropId;
+        this.velocity = velocity;
+        this.carriedSoil = carriedSoil;
         this.currentVertexId = currentVertexId;
         visited = new boolean[numberOfVertices];
         markAsVisited(currentVertexId);
+    }
+
+    public void setSolutionQuality(double solutionQuality) {
+        this.solutionQuality = solutionQuality;
     }
 
     public int getCurrentVertexId() {
@@ -47,7 +55,6 @@ public class WaterDrop {
 
     public void setCarriedSoil(double carriedSoil) {
         this.carriedSoil = carriedSoil;
-        this.solutionQuality = carriedSoil;
     }
 
     public double getSolutionQuality() {
