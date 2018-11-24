@@ -38,40 +38,16 @@ public class WFA extends TSP {
 
         while (!stopCreation) {
             // calculate number of subflows
+            n[0] = calculateSubFlowsInIteration(0);
             for (int i = 0; i < G; i++) {
-                //Cal. no. of sub-flows;
-                n[0] = calculateSubFlowsInIteration(0);
-                double Wik[] = new double[(int) n[0]];
-                double Vik[] = new double[(int) n[0]];
-
                 WaterFlowData mainFlow = new WaterFlowData();
                 mainFlow.addCost(0);
                 mainFlow.addNodeToFlow(i);
-
+                mainFlow.setMass(W[0]);
+                mainFlow.setVelocity(V[0]);
                 waterFlows.add(mainFlow);
 
-                ArrayList<Vertex> bestNodes = new ArrayList<Vertex>(graph.getGraph().get(mainFlow.getNodes().get(mainFlow.getNodes().size() - 1)));
-                Collections.sort(bestNodes);
-
-                for (int k = 0; k < n[i]; k++) {
-                    Wik[k] = calculateMassOfSubflowK(i, k);
-                    Vik[k] = calculateVelocityOfSubflowK(i, k);
-
-                    WaterFlowData subMainFlow = new WaterFlowData(mainFlow.getNodes(), mainFlow.getCost(), Wik[k], Vik[k]);
-                    subMainFlow.addNodeToFlow(bestNodes.get(k).getId());
-                    subMainFlow.addCost(bestNodes.get(k).getCost());
-                    waterFlows.add(subMainFlow);
-
-                    generateSubFlows(graph, subMainFlow, k);
-                    if (subMainFlow.getNodes().size() == graph.getNumberOfVertices()) {
-                        subMainFlow.addNodeToFlow(subMainFlow.getNodes().get(0));
-                        subMainFlow.addCost(graph.getGraph()
-                                .get(subMainFlow.getNodes().get(subMainFlow.getNodes().size() - 2))
-                                .get(subMainFlow.getNodes().get(0)).getCost());
-                        bestPath = subMainFlow.getCost() < bestCost ? subMainFlow.getNodes() : initialPath;
-                        bestCost = subMainFlow.getCost() < bestCost ? subMainFlow.getCost() : bestCost;
-                    }
-                }
+                generateSubFlows(graph, mainFlow, i);
             }
 
             printTour(bestPath);
@@ -280,9 +256,6 @@ public class WFA extends TSP {
         double bestDist = initialDist;
         double newDist;
         int swaps = 1;
-        int improve = 0;
-        int iterations = 0;
-        long comparisons = 0;
         ArrayList<Integer> newTour;
 
 
@@ -292,7 +265,6 @@ public class WFA extends TSP {
 
             for (int i = 1; i < initialPath.size() - 2; i++) {
                 for (int j = i + 1; j < initialPath.size() - 1; j++) {
-                    comparisons++;
                     //check distance of line A,B + line C,D against A,C + B,D if there is improvement, call swap method.
                     if ((graph.getGraph().get(initialPath.get(i)).get(initialPath.get(i - 1) > initialPath.get(i) ? initialPath.get(i - 1) - 1 : initialPath.get(i - 1)).getCost()
                             + graph.getGraph().get(initialPath.get(j + 1)).get(initialPath.get(j) > initialPath.get(j + 1) ? initialPath.get(j) - 1 : initialPath.get(j)).getCost())
@@ -307,7 +279,6 @@ public class WFA extends TSP {
                             initialPath = newTour;
                             bestDist = newTourCost;
                             swaps++;
-                            improve++;
                         }
                     }
                 }
