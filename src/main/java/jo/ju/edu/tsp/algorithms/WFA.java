@@ -34,8 +34,7 @@ public class WFA extends TSP {
         applyOPT2VersionTwo(initialPath, graph, bestCost);
 
         bestCost += graph.getGraph().get(initialPath.get(initialPath.size() - 1)).get(initialPath.get(0)).getCost();
-        applyOPT2VersionTwo(initialPath, graph, bestCost);
-
+        initialPath.add(initialPath.get(0));
         while (!stopCreation) {
             // calculate number of subflows
             n[0] = calculateSubFlowsInIteration(0);
@@ -59,8 +58,7 @@ public class WFA extends TSP {
     }
 
     private void generateSubFlows(Graph graph, WaterFlowData subMainFlow, int i) {
-        T = subMainFlow.getMass() * subMainFlow.getCost();
-        double n = calculateSubFlowsInIteration(subMainFlow.getMass(), subMainFlow.getVelocity());
+        double n = Math.ceil(calculateSubFlowsInIteration(subMainFlow.getMass(), subMainFlow.getVelocity()));
         double Wik[] = new double[(int) n];
         double Vik[] = new double[(int) n];
 
@@ -88,7 +86,7 @@ public class WFA extends TSP {
                 flow.addNodeToFlow(flow.getNodes().get(0));
                 flow.addCost(graph.getGraph()
                         .get(flow.getNodes().get(flow.getNodes().size() - 2))
-                        .get(flow.getNodes().get(0)).getCost());
+                        .get(flow.getNodes().get(0) > flow.getNodes().get(flow.getNodes().size() - 2) ? flow.getNodes().get(0) - 1 : flow.getNodes().get(0)).getCost());
                 bestPath = flow.getCost() < bestCost ? flow.getNodes() : initialPath;
                 bestCost = flow.getCost() < bestCost ? flow.getCost() : bestCost;
 
