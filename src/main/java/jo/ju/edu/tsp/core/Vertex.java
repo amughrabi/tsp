@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
     private int id;
     private double cost;
     private HashMap<String, Double> characteristics;
@@ -48,5 +48,15 @@ public class Vertex {
 
     public HashMap<String, Double> getCharacteristics() {
         return characteristics;
+    }
+
+    public int compareTo(@NotNull Vertex o) {
+        return Double.compare(this.cost, o.cost);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Vertex && this.id == ((Vertex) obj).getId();
+
     }
 }
