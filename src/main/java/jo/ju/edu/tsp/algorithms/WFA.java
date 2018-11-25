@@ -35,6 +35,7 @@ public class WFA extends TSP {
 
         bestCost += graph.getGraph().get(initialPath.get(initialPath.size() - 1)).get(initialPath.get(0)).getCost();
         initialPath.add(initialPath.get(0));
+        bestPath = initialPath;
         while (!stopCreation) {
             // calculate number of subflows
             n[0] = calculateSubFlowsInIteration(0);
@@ -71,6 +72,7 @@ public class WFA extends TSP {
 
         if (bestNodes.isEmpty())
             return;
+
         for (int k = 0; k < n; k++) {
             Wik[k] = calculateMassOfSubflowK(i, k, subMainFlow.getMass(), n);
             Vik[k] = calculateVelocityOfSubflowK(i, k, subMainFlow.getVelocity());
@@ -87,9 +89,11 @@ public class WFA extends TSP {
                 flow.addCost(graph.getGraph()
                         .get(flow.getNodes().get(flow.getNodes().size() - 2))
                         .get(flow.getNodes().get(0) > flow.getNodes().get(flow.getNodes().size() - 2) ? flow.getNodes().get(0) - 1 : flow.getNodes().get(0)).getCost());
-                bestPath = flow.getCost() < bestCost ? flow.getNodes() : initialPath;
-                bestCost = flow.getCost() < bestCost ? flow.getCost() : bestCost;
 
+                if(flow.getCost() < bestCost) {
+                    bestPath = flow.getNodes();
+                    bestCost = flow.getCost();
+                }
             }
             generateSubFlows(graph, flow, k);
 
