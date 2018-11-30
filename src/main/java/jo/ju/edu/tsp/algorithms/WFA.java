@@ -31,7 +31,7 @@ public class WFA extends TSP {
         Transformer.print(graph);
         initializingStep(graph);
         bestCost = generateInitialSolutionUsingNN(graph);
-        applyOPT2VersionTwo(initialPath, graph, bestCost);
+      //  applyOPT2VersionTwo(initialPath, graph, bestCost);
 
         bestCost += graph.getGraph().get(initialPath.get(initialPath.size() - 1)).get(initialPath.get(0)).getCost();
         initialPath.add(initialPath.get(0));
@@ -277,7 +277,7 @@ public class WFA extends TSP {
                         Double newTourCost = 0.0;
                         newTour = swap(initialPath, i, j, newTourCost, graph);
 
-                        if (newTourCost < bestDist) { //if the swap results in an improved distance, increment counters and update distance/tour
+                        if (newTourCost < bestDist) {
                             initialPath = newTour;
                             bestDist = newTourCost;
                             swaps++;
