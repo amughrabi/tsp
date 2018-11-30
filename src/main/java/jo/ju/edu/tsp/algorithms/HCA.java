@@ -3,6 +3,7 @@ package jo.ju.edu.tsp.algorithms;
 import jo.ju.edu.tsp.core.Graph;
 import jo.ju.edu.tsp.core.Vertex;
 import jo.ju.edu.tsp.core.xml.Transformer;
+import jo.ju.edu.tsp.set.SetInstance;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
@@ -20,7 +21,7 @@ public class HCA extends TSP {
 
     public @NotNull Graph solve(@NotNull Graph graph) {
         // print the graph
-        Transformer.print(graph);
+       // Transformer.print(graph);
         // Maximum number of iterations is a triple the number of vertices
         maxIterations = 3 * graph.getNumberOfVertices();
 
@@ -81,8 +82,9 @@ public class HCA extends TSP {
                 updateTemperature(waterDrops);
                 // check if the evaporation
                 // When the temperature increases and reaches a specified value, the evaporation stage is invoked.
-                if(temperature > maxTemperature) break;
+                //if(temperature > maxTemperature) break;
             }
+
             // 3.4. Evaporation Stage
             List<WaterDrop> evaporatedWaterDrops = evaporation(waterDrops);
             // 3.5. Condensation Stage
@@ -99,13 +101,13 @@ public class HCA extends TSP {
         if(bestGlobalSolution != null) {
             double cost = 0;
             for(int i : bestGlobalSolution.keySet()) {
-                System.out.print("---\nHamiltonian path: ");
-                System.out.print( (i + 1) );
+               // System.out.print("---\nHamiltonian path: ");
+                System.out.print( "Size: " + bestGlobalSolution.get(i).size() );
                 for(Vertex v : bestGlobalSolution.get(i)) {
                     cost += v.getCost();
-                    System.out.print("  ->  " + (v.getId()+1));
+                    //System.out.print("  ->  " + (v.getId()+1));
                 }
-                System.out.print("  ->  " +  (i + 1) );
+                //System.out.print("  ->  " +  (i + 1) );
             }
             System.out.println("   | cost (" + cost + ")");
         }
@@ -343,7 +345,7 @@ public class HCA extends TSP {
     public static void main(String[] args) {
         TSP tsp = new HCA();
         try {
-            tsp.solve();
+            tsp.solve(SetInstance.RL1304);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
