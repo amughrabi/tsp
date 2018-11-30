@@ -95,7 +95,7 @@ public class WFA extends TSP {
                     bestCost = flow.getCost();
                 }
             }
-            generateSubFlows(graph, flow, k);
+           // generateSubFlows(graph, flow, k);
 
         }
 
