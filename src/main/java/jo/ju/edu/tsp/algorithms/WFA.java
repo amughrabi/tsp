@@ -60,6 +60,7 @@ public class WFA extends TSP {
                     for(int subs = 0 ; subs < G / 2 && subs < waterFlowData.size(); subs++) {
                         generateSubFlows(graph, waterFlowData.get(subs), num + 1 );
                     }
+                    waterFlows.remove(num - 1);
                     num++;
                 }
             }
