@@ -25,7 +25,7 @@ public class WFA extends TSP {
     private ArrayList<Integer> bestPath;
     private double bestCost;
     private Random randomGenerator;
-    private ArrayList<WaterFlowData> waterFlows;
+    private HashMap<Integer, ArrayList<WaterFlowData> > waterFlows;
 
     public @NotNull Graph solve(@NotNull Graph graph) {
         Transformer.print(graph);
@@ -39,15 +39,29 @@ public class WFA extends TSP {
         while (!stopCreation) {
             // calculate number of subflows
             n[0] = calculateSubFlowsInIteration(0);
-            for (int i = 0; i < G; i++) {
+            for (int i = 0; i < 1; i++) {
                 WaterFlowData mainFlow = new WaterFlowData();
                 mainFlow.addCost(0);
                 mainFlow.addNodeToFlow(i);
                 mainFlow.setMass(W[0]);
                 mainFlow.setVelocity(V[0]);
-                waterFlows.add(mainFlow);
+                mainFlow.setI(0);
+                waterFlows.put(0, new ArrayList<WaterFlowData>());
+                waterFlows.get(0).add(mainFlow);
 
-                generateSubFlows(graph, mainFlow, i);
+
+                // take best num
+                int num = 0;
+
+                while (num < G) {
+                    ArrayList<WaterFlowData> waterFlowData = new ArrayList<WaterFlowData>(waterFlows.get(num));
+                    Collections.sort(waterFlowData);
+                    waterFlows.put(num + 1, new ArrayList<WaterFlowData>());
+                    for(int subs = 0 ; subs < G / 2 && subs < waterFlowData.size(); subs++) {
+                        generateSubFlows(graph, waterFlowData.get(subs), num + 1 );
+                    }
+                    num++;
+                }
             }
 
             printTour(bestPath);
@@ -58,7 +72,7 @@ public class WFA extends TSP {
         return graph;
     }
 
-    private void generateSubFlows(Graph graph, WaterFlowData subMainFlow, int i) {
+    private void generateSubFlows(Graph graph, WaterFlowData subMainFlow, int level) {
         double n = Math.ceil(calculateSubFlowsInIteration(subMainFlow.getMass(), subMainFlow.getVelocity()));
         double Wik[] = new double[(int) n];
         double Vik[] = new double[(int) n];
@@ -74,15 +88,15 @@ public class WFA extends TSP {
             return;
 
         for (int k = 0; k < n; k++) {
-            Wik[k] = calculateMassOfSubflowK(i, k, subMainFlow.getMass(), n);
-            Vik[k] = calculateVelocityOfSubflowK(i, k, subMainFlow.getVelocity());
+            Wik[k] = calculateMassOfSubflowK(subMainFlow.getI(), k, subMainFlow.getMass(), n);
+            Vik[k] = calculateVelocityOfSubflowK(subMainFlow.getI(), k, subMainFlow.getVelocity());
 
-            WaterFlowData flow = new WaterFlowData(subMainFlow.getNodes(), subMainFlow.getCost(), Wik[k], Vik[k]);
+            WaterFlowData flow = new WaterFlowData(subMainFlow.getNodes(), subMainFlow.getCost(), Wik[k], Vik[k], k);
 
             if (bestNodes.size() - 1 < k || bestNodes.get(k) == null) continue;
             flow.addNodeToFlow(bestNodes.get(k).getId());
             flow.addCost(bestNodes.get(k).getCost());
-            waterFlows.add(flow);
+            waterFlows.get(level).add(flow);
 
             if (flow.getNodes().size() == graph.getNumberOfVertices()) {
                 flow.addNodeToFlow(flow.getNodes().get(0));
@@ -95,7 +109,6 @@ public class WFA extends TSP {
                     bestCost = flow.getCost();
                 }
             }
-           // generateSubFlows(graph, flow, k);
 
         }
 
@@ -113,7 +126,7 @@ public class WFA extends TSP {
         un = 3;
         randomGenerator = new Random();
         stopCreation = false;
-        waterFlows = new ArrayList<WaterFlowData>();
+        waterFlows = new HashMap<Integer, ArrayList<WaterFlowData>>();
         bestPath = new ArrayList<Integer>();
         bestCost = 0;
     }

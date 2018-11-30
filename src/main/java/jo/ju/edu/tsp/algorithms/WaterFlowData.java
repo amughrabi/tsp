@@ -13,6 +13,7 @@ class WaterFlowData implements Comparable<WaterFlowData> {
     private double mass;
     private double velocity;
     private int location;
+    private int i;
 
     public WaterFlowData() {
         this.nodes = new ArrayList<Integer>();
@@ -20,12 +21,13 @@ class WaterFlowData implements Comparable<WaterFlowData> {
         location = -1;
     }
 
-    public WaterFlowData(ArrayList<Integer> nodes, double cost, double mass, double velocity) {
+    public WaterFlowData(ArrayList<Integer> nodes, double cost, double mass, double velocity, int i) {
         this.nodes = new ArrayList<Integer>(nodes);
         this.cost = cost;
         this.velocity = velocity;
         this.mass = mass;
         this.location = nodes.get(nodes.size() - 1);
+        this.i = i;
     }
 
     public ArrayList<Integer> getNodes() {
@@ -82,10 +84,19 @@ class WaterFlowData implements Comparable<WaterFlowData> {
         this.location = location;
     }
 
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof WaterFlowData && this.location == ((WaterFlowData) obj).location && this.nodes.size() == ((WaterFlowData) obj)
-                .getNodes().size();
+                .getNodes().size() && this.cost == ((WaterFlowData) obj).getCost();
 
     }
 }
