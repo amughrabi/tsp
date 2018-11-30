@@ -28,6 +28,7 @@ public class WFA extends TSP {
     private HashMap<Integer, ArrayList<WaterFlowData> > waterFlows;
 
     public @NotNull Graph solve(@NotNull Graph graph) {
+        Date previous = new Date(System.currentTimeMillis());
         Transformer.print(graph);
         initializingStep(graph);
         bestCost = generateInitialSolutionUsingNN(graph);
@@ -39,7 +40,8 @@ public class WFA extends TSP {
         while (!stopCreation) {
             // calculate number of subflows
             n[0] = calculateSubFlowsInIteration(0);
-            for (int i = 0; i < 1; i++) {
+            int iterations = G > 100 ? 1 : (int) G;
+            for (int i = 0; i < iterations; i++) {
                 WaterFlowData mainFlow = new WaterFlowData();
                 mainFlow.addCost(0);
                 mainFlow.addNodeToFlow(i);
@@ -67,6 +69,9 @@ public class WFA extends TSP {
 
             printTour(bestPath);
             System.out.println("COST: " + bestCost);
+            System.out.println(previous);
+            System.out.println(new Date(System.currentTimeMillis()));
+
             stopCreation = true;
         }
 
