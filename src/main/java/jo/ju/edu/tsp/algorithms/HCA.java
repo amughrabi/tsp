@@ -207,7 +207,9 @@ public class HCA extends TSP {
     private void updateCarrySoil(WaterDrop wd, Vertex v) {
         double timeWD = v.getCost() / wd.getVelocity();
         double dSoil = 1 / timeWD;
-        wd.setCarriedSoil(wd.getCarriedSoil() + (dSoil / wd.getSolutionQuality()));
+        double carriedSoil = wd.getCarriedSoil() + (dSoil / wd.getSolutionQuality());
+        wd.setCarriedSoil(carriedSoil);
+        wd.setSolutionQuality(carriedSoil);
     }
 
     private void updateSoil(WaterDrop wd, Vertex v, List<WaterDrop> wds, Graph graph) {
