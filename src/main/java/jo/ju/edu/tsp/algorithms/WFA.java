@@ -40,8 +40,9 @@ public class WFA extends TSP {
         while (!stopCreation) {
             // calculate number of subflows
             n[0] = calculateSubFlowsInIteration(0);
-            int iterations = G > 100 ? 1 : (int) G;
-            for (int i = 0; i < iterations; i++) {
+            int i = G > 100 ? new Random().nextInt((int) (G -1)): 0;
+            int iterations = G > 100 ? i + 1 : (int) G;
+            for (; i < iterations; i++) {
                 WaterFlowData mainFlow = new WaterFlowData();
                 mainFlow.addCost(0);
                 mainFlow.addNodeToFlow(i);
