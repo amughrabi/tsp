@@ -232,8 +232,8 @@ public class WFA extends TSP {
         for (int i = 0; i < graph.getNumberOfVertices(); i++) {
             minCost = Integer.MAX_VALUE;
             minNode = Integer.MAX_VALUE;
-            nextNode = i;
-            initialNode = i;
+            nextNode = new Random().nextInt(graph.getNumberOfVertices() - 1);
+            initialNode = new Random().nextInt(graph.getNumberOfVertices() - 1);
             roadCost = 0;
             visited = new HashMap<Integer, Boolean>();
             visited.put(initialNode, true);
