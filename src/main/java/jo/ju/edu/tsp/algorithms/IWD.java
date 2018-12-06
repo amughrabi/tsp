@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import jo.ju.edu.tsp.core.Graph;
 import jo.ju.edu.tsp.core.Vertex;
 import jo.ju.edu.tsp.core.xml.Transformer;
+import jo.ju.edu.tsp.set.SetInstance;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,10 +18,8 @@ public class IWD extends TSP {
     private final double EPSILON = 0.01;
 
     public Graph solve(Graph graph) {
-        // print the graph
-        Transformer.print(graph);
         // Maximum number of iterations is a triple the number of vertices
-        maxIterations = 3 * graph.getNumberOfVertices();
+        maxIterations =1000;
 
         // A graph of water drops solutions, each index represent a water drop.
         Graph solutions;
@@ -34,45 +33,44 @@ public class IWD extends TSP {
 
         for (int iteration = 0; iteration < maxIterations; iteration++) {
             solutions = new Graph(graph.getNumberOfVertices(), "Solutions");
-            for (int i = 0; i < waterDrops.size()*waterDrops.size(); i++) {
+
+            int numberOfWaterDrops = graph.getNumberOfVertices() > 100 ? 1 : graph.getNumberOfVertices();
+            int i = numberOfWaterDrops == 1 ? new Random().nextInt(graph.getNumberOfVertices()) : 0;
+            numberOfWaterDrops = numberOfWaterDrops == 1 ? i + 1 : graph.getNumberOfVertices();
+            for (; i < numberOfWaterDrops; i++) {
+
                 double cost = 0;
                 Vertex nextNode = null;
-                waterDrop = waterDrops.get(i%waterDrops.size());
+                waterDrop = waterDrops.get(i);
+                List<Integer> visited = new ArrayList<Integer>();
                 // Graph graph1 = new Graph(graph.getNumberOfVertices(),"Solution");
-
-                int waterDropCurrentVertexId = waterDrop.getCurrentVertexId();
-                List<Vertex> adjVertices = graph.adjacentOf(waterDropCurrentVertexId);
-                //List<Vertex> uniqueAdjVertices = getUniqueAdjVertices(waterDrop, adjVertices);
-                double fSoilSummation = getFSoilSummation(adjVertices, waterDrop);
-                double prob = 0;
-                for (Vertex vertex : adjVertices) {
-                    if (!waterDrop.isVisited(vertex.getId())) {
-                        {
-                            double maxProb = fSoil(vertex, adjVertices, waterDrop) / fSoilSummation;
-                            if (maxProb >= prob) {
-                                prob = maxProb;
-                                nextNode = vertex;
-                            }
+                while (visited.size() != waterDrops.size() - 1) {
+                    int waterDropCurrentVertexId = waterDrop.getCurrentVertexId();
+                    List<Vertex> adjVertices = graph.adjacentOf(waterDropCurrentVertexId);
+                    List<Vertex> uniqueAdjVertices = getUniqueAdjVertices(waterDrop, adjVertices);
+                    double prob = 0;
+                    for (Vertex vertex : uniqueAdjVertices) {
+                        double maxProb = fSoil(vertex, uniqueAdjVertices, waterDrop) /  getFSoilSummation(uniqueAdjVertices, waterDrop);
+                        if (maxProb >= prob) {
+                            prob = maxProb;
+                            nextNode = vertex;
                         }
                     }
-                }
-                if (nextNode == null) break;
+                    if (nextNode == null) break;
 
-                // graph1.put(waterDrop.getCurrentVertexId(),nextNode);
+                    visited.add(1);
+                    waterDrop.markAsVisited(nextNode.getId());
+                    cost = graph.getVertex(waterDropCurrentVertexId, nextNode.getId()).getCharacteristic("cost") + waterDrop.getSolutionQuality();
+                    waterDrop.setSolutionQuality(cost);
+                    updateVelocity(waterDrop, nextNode.getCharacteristic("soil"));
 
-                waterDrop.markAsVisited(nextNode.getId());
-                cost = graph.getVertex(waterDropCurrentVertexId,nextNode.getId()).getCharacteristic("cost") + waterDrop.getSolutionQuality();
-                waterDrop.setSolutionQuality(cost);
-                updateVelocity(waterDrop, nextNode.getCharacteristic("soil"));
+                    updateSoil(waterDrop, nextNode, graph);
+                    waterDrop.setCurrentVertexId(nextNode.getId());
 
-                updateSoil(waterDrop, nextNode, graph);
-                waterDrop.setCurrentVertexId(nextNode.getId());
-
-                // save the solution
-                solutions.put(i%waterDrops.size(), nextNode);
-            }
+                    solutions.put(i, nextNode);
+                }}
             for (WaterDrop waterDrop1:
-                 waterDrops) {
+                    waterDrops) {
                 Vertex firstVertex = graph.getVertex(waterDrop1.getCurrentVertexId(), waterDrop1.getWaterDropId());
                 solutions.put(waterDrop1.getWaterDropId(), firstVertex);
                 waterDrop1.setSolutionQuality(firstVertex.getCharacteristic("cost")+ waterDrop1.getSolutionQuality());
@@ -83,8 +81,6 @@ public class IWD extends TSP {
                 bestGlobalSolution = new HashMap<Integer, List<Vertex>>();
                 bestGlobalSolution.put(bestWaterDrop.getWaterDropId(), solutions.adjacentOf(bestWaterDrop.getWaterDropId()));
             }
-
-            /////////////////////
             List<Vertex> vertices = solutions.adjacentOf(bestWaterDrop.getWaterDropId());
 
             int to = bestWaterDrop.getWaterDropId();
@@ -108,22 +104,8 @@ public class IWD extends TSP {
             }
             waterDrops = getWDs(graph);
 
-//            waterDrops = getWDs(graph);
         }
         System.out.println(bestTourCost);
-
-
-//        // add waterdrop to cities randomly
-//        List<Integer> tmp = new ArrayList();
-//        for (int i=0; i< numberOfCities;i++){
-//            tmp.add(i);
-//        }
-//        waterDrops = new ArrayList();
-//        for (int i=0;i<numberOfWaterDrops;i++) {
-//            int random = getRandomNumberInts(0, tmp.size()-1);
-//            tmp.remove(random);
-//            waterDrops.add(new IWD(random));
-//        }
 
         return new Graph(0,"");
     }
@@ -227,7 +209,7 @@ public class IWD extends TSP {
     public static void main(String[] args) {
         TSP iwd = new IWD();
         try {
-            iwd.solve();
+            iwd.solve(SetInstance.SIMPLE);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
