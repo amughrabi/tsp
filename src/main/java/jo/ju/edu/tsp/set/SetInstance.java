@@ -13,7 +13,11 @@ public class SetInstance {
             RL1304   = f("rl1304", 1304,"rl1304.xml"),
             RL5934   = f("rl5934", 5934,"rl5934.xml"),
             XMC10150 = f("xmc10150", 10150, "xmc10150.xml"),
-            XSC6880  = f("xsc6880", 6880, "xsc6880.xml");
+            XSC6880  = f("xsc6880", 6880, "xsc6880.xml"),
+            CH130    = f("ch130", 130, "ch130.xml"),
+            D198     = f("d198", 198, "d198.xml"),
+            EIL76    = f("eil76", 176, "eil76.xml"),
+            WI29     = f("wi29", 29, "wi29.xml");
 
     private static @NotNull SetDetails f(@NotNull String name, int size, @NotNull String uri) {
         return new SetDetails(new File(SetInstance.class.getClassLoader().getResource("dataset/must/" + uri).getFile()),
