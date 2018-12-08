@@ -1,6 +1,7 @@
 NAME: bayg29
 TYPE: TSP
 COMMENT: 29 Cities in Bavaria, geographical distances (Groetschel,Juenger,Reinelt)
+OPTIMAL: 1610
 DIMENSION: 29
 EDGE_WEIGHT_TYPE: EXPLICIT
 EDGE_WEIGHT_FORMAT: UPPER_ROW 

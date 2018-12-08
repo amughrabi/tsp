@@ -22,7 +22,7 @@ public class SetInstance {
             bayg29   = f("bayg29", 29, "bayg29.xml"),
             bays29   = f("bays29", 29, "bays29.xml"),
             berlin52 = f("berlin52", 52, "berlin52.xml"),
-            berlin58 = f("berlin58", 58, "berlin58.xml"),
+            brazil58 = f("brazil58", 58, "brazil58.xml"),
             gr17     = f("gr17", 17, "gr17.xml"),
             gr21     = f("gr21", 21, "gr21.xml"),
             gr24     = f("gr24", 24, "gr24.xml"),
