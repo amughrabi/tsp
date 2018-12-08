@@ -17,7 +17,17 @@ public class SetInstance {
             CH130    = f("ch130", 130, "ch130.xml"),
             D198     = f("d198", 198, "d198.xml"),
             EIL76    = f("eil76", 176, "eil76.xml"),
-            WI29     = f("wi29", 29, "wi29.xml");
+            WI29     = f("wi29", 29, "wi29.xml"),
+            BGB4355  = f("bgb4355", 4355, "bgb4355.xml"),
+            bayg29   = f("bayg29", 29, "bayg29.xml"),
+            bays29   = f("bays29", 29, "bays29.xml"),
+            berlin52 = f("berlin52", 52, "berlin52.xml"),
+            berlin58 = f("berlin58", 58, "berlin58.xml"),
+            gr17     = f("gr17", 17, "gr17.xml"),
+            gr21     = f("gr21", 21, "gr21.xml"),
+            gr24     = f("gr24", 24, "gr24.xml"),
+            gr48     = f("gr48", 24, "gr48.xml");
+
 
     private static @NotNull SetDetails f(@NotNull String name, int size, @NotNull String uri) {
         return new SetDetails(new File(SetInstance.class.getClassLoader().getResource("dataset/must/" + uri).getFile()),
