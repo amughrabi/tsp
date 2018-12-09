@@ -2,16 +2,14 @@ package jo.ju.edu.tsp.algorithms;
 
 import jo.ju.edu.tsp.core.Graph;
 import jo.ju.edu.tsp.core.Vertex;
+import jo.ju.edu.tsp.set.SetDetails;
 import jo.ju.edu.tsp.set.SetInstance;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class HCA extends TSP {
     private static int maxIterations;
@@ -19,6 +17,7 @@ public class HCA extends TSP {
     private double temperature = 50, maxTemperature = 1000;
 
     public @NotNull Graph solve(@NotNull Graph graph) {
+        System.out.println( "started: " + (new Date()));
         // print the graph
        // Transformer.print(graph);
         // Maximum number of iterations is a triple the number of vertices
@@ -33,6 +32,7 @@ public class HCA extends TSP {
         Vertex theChosenOne;
         HashMap<Integer, List<Vertex>> bestGlobalSolution = null;
         int cycle = 0;
+        temperature = 50;
         //maxTemperature = maxTemperature * graph.getNumberOfVertices();
         while (temperature < maxTemperature) {
             // distribute the initial amount of soil and depth on the vertices.
@@ -88,7 +88,7 @@ public class HCA extends TSP {
                 // When the temperature increases and reaches a specified value, the evaporation stage is invoked.
                 //if(temperature > maxTemperature) break;
             }
-            System.out.println("Done");
+            System.out.println("Done for " + graph.getName());
 
             // 3.4. Evaporation Stage
             List<WaterDrop> evaporatedWaterDrops = evaporation(waterDrops);
@@ -101,6 +101,8 @@ public class HCA extends TSP {
             }
 
             cycle ++;
+            System.out.println("cycle" + cycle + " tempreture: " + temperature);
+            //break;
         }
         // Print the best global solution details
         if(bestGlobalSolution != null) {
@@ -114,9 +116,10 @@ public class HCA extends TSP {
                 }
                 //System.out.print("  ->  " +  (i + 1) );
             }
-            System.out.println("   | cost (" + cost + ")");
+            System.out.println("   | cost (" + cost + ") cycles: " + cycle);
         }
 
+        System.out.println( "ended: " + (new Date()));
         return new Graph(0, "");
     }
 
@@ -352,12 +355,37 @@ public class HCA extends TSP {
     public static void main(String[] args) {
         TSP tsp = new HCA();
         try {
-            tsp.solve(SetInstance.D198);
+            SetDetails ds = SetInstance.BGB4355;
+            tsp.solve(ds);
+
+            System.gc();
+            System.out.println("-----------------------------------");
+
+            tsp.solve(ds);
+
+            System.gc();
+            System.out.println("-----------------------------------");
+
+            tsp.solve(ds);
+
+            System.gc();
+            System.out.println("-----------------------------------");
+
+            tsp.solve(ds);
+
+            System.gc();
+            System.out.println("-----------------------------------");
+
+            tsp.solve(ds);
+
+            Thread.sleep(9000);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

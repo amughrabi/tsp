@@ -1,6 +1,6 @@
 NAME: u1817
-COMMENT: Drilling problem (Reinelt)
 TYPE: TSP
+COMMENT: Drilling problem (Reinelt)
 DIMENSION: 1817
 EDGE_WEIGHT_TYPE: EUC_2D
 NODE_COORD_SECTION

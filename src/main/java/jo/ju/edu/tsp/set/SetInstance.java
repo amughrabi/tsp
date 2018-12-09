@@ -26,7 +26,11 @@ public class SetInstance {
             gr17     = f("gr17", 17, "gr17.xml"),
             gr21     = f("gr21", 21, "gr21.xml"),
             gr24     = f("gr24", 24, "gr24.xml"),
-            gr48     = f("gr48", 24, "gr48.xml");
+            gr48     = f("gr48", 48, "gr48.xml"),
+            rd400    = f("rd400", 400, "rd400.xml"),
+            dca1389  = f("dca1389", 1389, "dca1389.xml"),
+            u1817    = f("u1817", 1817, "u1817.xml"),
+            xqc2175  = f("xqc2175", 2175, "xqc2175.xml");
 
 
     private static @NotNull SetDetails f(@NotNull String name, int size, @NotNull String uri) {
