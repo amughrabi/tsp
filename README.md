@@ -34,11 +34,19 @@ The following code demonstrates an example of using the **HCA** algorithm on **R
             }  
         }  
     }
-## Measurements
-TBD
-## The Team 
+## Systems Prerequisites
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+
+* [Maven](https://maven.apache.org/)
+* [Git](https://git-scm.com/) - Optional in case of download the project
+## Run the project
+* Download or clone the project
+* Open the source code in an IDE; for example, [IntelliJ](https://www.jetbrains.com/idea/)
+* Go to any algorithm; for example, to run the HCA, you want */tsp/src/main/java/jo/ju/edu/tsp/algorithms/HCA.java*
+* Right click in the HCA class
 
+
+## The Team 
  - Ahmad Al Mughrabi.
  - Raneem abuzayed.
- - Ali
+ - Ali Al Sarhan
  - Nancy
