@@ -44,6 +44,7 @@ The following code demonstrates an example of using the **HCA** algorithm on **R
 * Go to any algorithm; for example, to run the HCA, you want */tsp/src/main/java/jo/ju/edu/tsp/algorithms/HCA.java*
 * Right click in the HCA class
 
+![](https://raw.githubusercontent.com/amughrabi/tsp/master/src/test/resources/ezgif-1-96b68ef0ced3.gif)
 
 ## The Team 
  - Ahmad Al Mughrabi.
