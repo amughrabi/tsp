@@ -355,7 +355,7 @@ public class HCA extends TSP {
     public static void main(String[] args) {
         TSP tsp = new HCA();
         try {
-            SetDetails ds = SetInstance.BGB4355;
+            SetDetails ds = SetInstance.SIMPLE;
             tsp.solve(ds);
 
             System.gc();
