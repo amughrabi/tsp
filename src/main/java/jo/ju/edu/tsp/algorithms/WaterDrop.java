@@ -9,11 +9,12 @@ public class WaterDrop {
 
     // Current vertex
     private int currentVertexId;
-
     // properties
     private double velocity, carriedSoil, solutionQuality;
     // The visited map for each water drop to minimize the duplicate efforts.
     private boolean[] visited;
+    // The number of visited nodes.
+    private int numberOfVisitedNodes;
 
     public WaterDrop(int waterDropId, int currentVertexId, int numberOfVertices) {
         this(waterDropId, currentVertexId, numberOfVertices, 100, 1);
@@ -38,6 +39,7 @@ public class WaterDrop {
         this.carriedSoil = carriedSoil;
         this.currentVertexId = currentVertexId;
         visited = new boolean[numberOfVertices];
+        numberOfVisitedNodes = 0;
         markAsVisited(currentVertexId);
     }
     public WaterDrop(int waterDropId, int currentVertexId, int numberOfVertices, double solutionQuality) {
@@ -98,11 +100,16 @@ public class WaterDrop {
     public void markAsVisited(int vertexId) {
         if(vertexId < visited.length) {
             visited[vertexId] = true;
+            numberOfVisitedNodes++;
         }
     }
 
     public int getWaterDropId() {
         return waterDropId;
+    }
+
+    public int getNumberOfVisitedNodes() {
+        return numberOfVisitedNodes;
     }
 
     public int getFirstVertexId() {

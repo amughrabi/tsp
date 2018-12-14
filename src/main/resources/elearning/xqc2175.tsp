@@ -1,8 +1,6 @@
 NAME: xqc2175
-COMMENT: Bonn VLSI data set with 2175 points
-COMMENT: Uni Bonn, Research Institute for Discrete Math
-COMMENT: Contributed by Andre Rohe
 TYPE: TSP
+COMMENT: Bonn VLSI data set with 2175 points Uni Bonn, Research Institute for Discrete Math Contributed by Andre Rohe
 DIMENSION: 2175
 EDGE_WEIGHT_TYPE: EUC_2D
 NODE_COORD_SECTION
