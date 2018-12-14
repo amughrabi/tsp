@@ -152,7 +152,7 @@ public class IWD extends TSP {
     }
 
     private List<WaterDrop> getWDs(Graph graph) {
-        List<WaterDrop> waterDrops = new ArrayList<>(graph.getNumberOfVertices());
+        List<WaterDrop> waterDrops = new ArrayList<WaterDrop>(graph.getNumberOfVertices());
 
         for (int i = 0; i < graph.getNumberOfVertices(); i++) {
             int random = getRandomNumberInts(0, graph.getNumberOfVertices() - 1);
