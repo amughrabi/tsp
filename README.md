@@ -42,7 +42,7 @@ The following code demonstrates an example of using the **HCA** algorithm on **R
 * Download or clone the project
 * Open the source code in an IDE; for example, [IntelliJ](https://www.jetbrains.com/idea/)
 * Go to any algorithm; for example, to run the HCA, you want */tsp/src/main/java/jo/ju/edu/tsp/algorithms/HCA.java*
-* Right click in the HCA class
+* Right click in the HCA class -> Click on "Run'HCA.main()'"
 
 ![](https://raw.githubusercontent.com/amughrabi/tsp/master/src/test/resources/ezgif-1-96b68ef0ced3.gif)
 
